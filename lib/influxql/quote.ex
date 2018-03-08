@@ -33,7 +33,6 @@ defmodule InfluxQL.Quote do
 
   def identifier(identifier), do: identifier |> Kernel.to_string() |> identifier()
 
-
   @doc """
   Quotes a value for use in a query.
 
