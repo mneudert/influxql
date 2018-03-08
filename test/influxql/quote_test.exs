@@ -1,5 +1,5 @@
 defmodule InfluxQL.QuoteTest do
   use ExUnit.Case
 
-  doctest InfluxQL, import: true
+  doctest InfluxQL.Quote, import: true
 end
