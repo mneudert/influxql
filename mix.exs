@@ -9,16 +9,14 @@ defmodule InfluxQL.Mixfile do
       version: "0.1.0-dev",
       elixir: "~> 1.3",
       deps: deps(),
-      build_embedded: Mix.env() == :prod,
-      start_permanent: Mix.env() == :prod,
+      description: "InfluxQL",
+      docs: docs(),
+      package: package(),
       preferred_cli_env: [
         coveralls: :test,
         "coveralls.detail": :test,
         "coveralls.travis": :test
       ],
-      description: "InfluxQL",
-      docs: docs(),
-      package: package(),
       test_coverage: [tool: ExCoveralls]
     ]
   end
