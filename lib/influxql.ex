@@ -1,5 +1,5 @@
 defmodule InfluxQL do
   @moduledoc """
-  InfluxQL
+  InfluxQL utility/tooling package
   """
 end

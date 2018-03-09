@@ -6,10 +6,11 @@ defmodule InfluxQL.Mixfile do
   def project do
     [
       app: :influxql,
+      name: "InfluxQL",
       version: "0.1.0-dev",
       elixir: "~> 1.3",
       deps: deps(),
-      description: "InfluxQL",
+      description: "InfluxQL utility/tooling package",
       docs: docs(),
       package: package(),
       preferred_cli_env: [

@@ -1,4 +1,4 @@
-# InfluxQL
+# InfluxQL utility/tooling package
 
 ## Setup
 
@@ -7,7 +7,7 @@ Add the library as a dependency to your `mix.exs` file:
 ```elixir
 defp deps do
   [
-    {:influxql, "~> 0.1"}
+    {:influxql, "~> 0.1.0"}
   ]
 end
 ```
