@@ -8,6 +8,9 @@ defmodule InfluxQL.Quote do
 
   ## Examples
 
+      iex> identifier(:from_atom)
+      "from_atom"
+
       iex> identifier("unquoted")
       "unquoted"
 
