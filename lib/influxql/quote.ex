@@ -14,6 +14,9 @@ defmodule InfluxQL.Quote do
       iex> identifier("unquoted")
       "unquoted"
 
+      iex> identifier("unquoted_100")
+      "unquoted_100"
+
       iex> identifier("_unquoted")
       "_unquoted"
 
