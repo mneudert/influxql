@@ -30,8 +30,12 @@ defmodule InfluxQL.Quote do
       "\\"dÃ¡shes-and.stÃ¼ff\\""
   """
   @spec identifier(String.t()) :: String.t()
+  for char <- ?0..?9 do
+    def identifier(<<unquote(char), _ :: binary>> = identifier), do: "\"#{identifier}\""
+  end
+
   def identifier(identifier) when is_binary(identifier) do
-    case Regex.match?(~r/(^[0-9]|[^a-zA-Z0-9_])/, identifier) do
+    case Regex.match?(~r/([^a-zA-Z0-9_])/, identifier) do
       false -> identifier
       true -> "\"#{identifier}\""
     end
