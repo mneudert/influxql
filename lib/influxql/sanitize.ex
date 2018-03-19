@@ -25,7 +25,7 @@ defmodule InfluxQL.Sanitize do
       iex> redact_passwords(~s(set password for "admin" = "admin"))
       ~s(set password for "admin" = [REDACTED])
   """
-  @spec redact_passwords(String.t) :: String.t
+  @spec redact_passwords(String.t()) :: String.t()
   def redact_passwords(query) do
     query
     |> redact_slice(@re_pwd_create)
@@ -39,7 +39,9 @@ defmodule InfluxQL.Sanitize do
         {_, suffix} = String.split_at(query, start + len)
 
         prefix <> "[REDACTED]" <> suffix
-      _ -> query
+
+      _ ->
+        query
     end
   end
 end

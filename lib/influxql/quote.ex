@@ -31,7 +31,7 @@ defmodule InfluxQL.Quote do
   """
   @spec identifier(String.t()) :: String.t()
   for char <- ?0..?9 do
-    def identifier(<<unquote(char), _ :: binary>> = identifier), do: "\"#{identifier}\""
+    def identifier(<<unquote(char), _::binary>> = identifier), do: "\"#{identifier}\""
   end
 
   def identifier(identifier) when is_binary(identifier) do
