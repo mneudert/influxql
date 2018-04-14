@@ -7,7 +7,7 @@ defmodule InfluxQL.Mixfile do
     [
       app: :influxql,
       name: "InfluxQL",
-      version: "0.1.0-dev",
+      version: "0.1.0",
       elixir: "~> 1.3",
       deps: deps(),
       description: "InfluxQL utility/tooling package",
@@ -33,7 +33,7 @@ defmodule InfluxQL.Mixfile do
     [
       extras: ["CHANGELOG.md", "README.md"],
       main: "readme",
-      source_ref: "master",
+      source_ref: "v0.1.0",
       source_url: @url_github
     ]
   end
