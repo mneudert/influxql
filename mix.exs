@@ -31,8 +31,7 @@ defmodule InfluxQL.Mixfile do
 
   defp docs do
     [
-      extras: ["CHANGELOG.md", "README.md"],
-      main: "readme",
+      main: "InfluxQL",
       source_ref: "master",
       source_url: @url_github
     ]
