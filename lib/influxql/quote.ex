@@ -29,7 +29,7 @@ defmodule InfluxQL.Quote do
       iex> identifier("dÃ¡shes-and.stÃ¼ff")
       "\\"dÃ¡shes-and.stÃ¼ff\\""
   """
-  @spec identifier(String.t()) :: String.t()
+  @spec identifier(term) :: String.t()
   for char <- ?0..?9 do
     def identifier(<<unquote(char), _::binary>> = identifier), do: "\"#{identifier}\""
   end
@@ -57,7 +57,7 @@ defmodule InfluxQL.Quote do
       iex> value("stringy")
       "'stringy'"
   """
-  @spec value(any) :: String.t()
+  @spec value(term) :: String.t()
   def value(value) when is_binary(value), do: "'#{value}'"
   def value(value), do: Kernel.to_string(value)
 end
