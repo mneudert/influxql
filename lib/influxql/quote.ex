@@ -28,8 +28,22 @@ defmodule InfluxQL.Quote do
 
       iex> identifier("dÃ¡shes-and.stÃ¼ff")
       "\\"dÃ¡shes-and.stÃ¼ff\\""
+
+   ## Invalid identifier types
+
+      iex> identifier(%{key: :value})
+      ** (ArgumentError) invalid InfluxQL identifier: %{key: :value}
+
+      iex> identifier({:key, :value})
+      ** (ArgumentError) invalid InfluxQL identifier: {:key, :value}
   """
   @spec identifier(term) :: String.t()
+  def identifier(identifier)
+      when is_map(identifier) or is_tuple(identifier) or is_pid(identifier) or is_port(identifier) or
+             is_reference(identifier) or is_function(identifier) do
+    raise ArgumentError, "invalid InfluxQL identifier: #{inspect(identifier)}"
+  end
+
   for char <- ?0..?9 do
     def identifier(<<unquote(char), _::binary>> = identifier), do: "\"#{identifier}\""
   end
