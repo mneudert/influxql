@@ -70,8 +70,22 @@ defmodule InfluxQL.Quote do
 
       iex> value("stringy")
       "'stringy'"
+
+   ## Invalid value types
+
+      iex> value(%{key: :value})
+      ** (ArgumentError) invalid InfluxQL value: %{key: :value}
+
+      iex> value({:key, :value})
+      ** (ArgumentError) invalid InfluxQL value: {:key, :value}
   """
   @spec value(term) :: String.t()
+  def value(value)
+      when is_map(value) or is_tuple(value) or is_pid(value) or is_port(value) or
+             is_reference(value) or is_function(value) do
+    raise ArgumentError, "invalid InfluxQL value: #{inspect(value)}"
+  end
+
   def value(value) when is_binary(value), do: "'#{value}'"
   def value(value), do: Kernel.to_string(value)
 end

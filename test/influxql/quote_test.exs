@@ -12,4 +12,12 @@ defmodule InfluxQL.QuoteTest do
   test "invalid identifier type: pid" do
     assert_raise ArgumentError, fn -> Quote.identifier(self()) end
   end
+
+  test "invalid value type: function" do
+    assert_raise ArgumentError, fn -> Quote.value(fn -> nil end) end
+  end
+
+  test "invalid value type: pid" do
+    assert_raise ArgumentError, fn -> Quote.value(self()) end
+  end
 end
