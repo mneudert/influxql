@@ -41,6 +41,11 @@ defmodule InfluxQL.Quote do
 
       iex> identifier(<<1::4>>)
       ** (ArgumentError) invalid InfluxQL identifier: <<1::size(4)>>
+
+  ## InfluxQL injection prevention
+
+      iex> identifier(~S(wasnot"nice))
+      ~S("wasnot\\"nice")
   """
   @spec identifier(term) :: String.t()
   def identifier(identifier)
@@ -57,7 +62,7 @@ defmodule InfluxQL.Quote do
   def identifier(identifier) when is_binary(identifier) do
     case Regex.match?(~r/([^a-zA-Z0-9_])/, identifier) do
       false -> identifier
-      true -> ~s("#{identifier}")
+      true -> ~s("#{Sanitize.escape_identifier(identifier)}")
     end
   end
 
