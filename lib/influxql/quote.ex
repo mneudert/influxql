@@ -71,6 +71,9 @@ defmodule InfluxQL.Quote do
       iex> value(false)
       "false"
 
+      iex> value(nil)
+      "''"
+
       iex> value("stringy")
       "'stringy'"
 
@@ -89,6 +92,7 @@ defmodule InfluxQL.Quote do
     raise ArgumentError, "invalid InfluxQL value: #{inspect(value)}"
   end
 
+  def value(nil), do: "''"
   def value(value) when is_boolean(value), do: Kernel.to_string(value)
   def value(value) when is_atom(value), do: "'#{Atom.to_string(value)}'"
   def value(value) when is_binary(value), do: "'#{value}'"
