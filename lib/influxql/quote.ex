@@ -77,6 +77,9 @@ defmodule InfluxQL.Quote do
       iex> value("stringy")
       "'stringy'"
 
+      iex> value('charlisty')
+      "'charlisty'"
+
    ## Invalid value types
 
       iex> value(%{key: :value})
@@ -96,5 +99,6 @@ defmodule InfluxQL.Quote do
   def value(value) when is_boolean(value), do: Kernel.to_string(value)
   def value(value) when is_atom(value), do: "'#{Atom.to_string(value)}'"
   def value(value) when is_binary(value), do: "'#{value}'"
+  def value(value) when is_list(value), do: "'#{List.to_string(value)}'"
   def value(value), do: Kernel.to_string(value)
 end
