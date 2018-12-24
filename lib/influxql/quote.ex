@@ -38,11 +38,15 @@ defmodule InfluxQL.Quote do
 
       iex> identifier({:key, :value})
       ** (ArgumentError) invalid InfluxQL identifier: {:key, :value}
+
+      iex> identifier(<<1::4>>)
+      ** (ArgumentError) invalid InfluxQL identifier: <<1::size(4)>>
   """
   @spec identifier(term) :: String.t()
   def identifier(identifier)
       when is_map(identifier) or is_tuple(identifier) or is_pid(identifier) or is_port(identifier) or
-             is_reference(identifier) or is_function(identifier) do
+             is_reference(identifier) or is_function(identifier) or
+             (is_bitstring(identifier) and not is_binary(identifier)) do
     raise ArgumentError, "invalid InfluxQL identifier: #{inspect(identifier)}"
   end
 
@@ -90,18 +94,15 @@ defmodule InfluxQL.Quote do
       iex> value({:key, :value})
       ** (ArgumentError) invalid InfluxQL value: {:key, :value}
 
+      iex> value(<<1::4>>)
+      ** (ArgumentError) invalid InfluxQL value: <<1::size(4)>>
+
   ## InfluxQL injection prevention
 
       iex> value("wasn't nice")
       "'wasn\\\\'t nice'"
   """
   @spec value(term) :: String.t()
-  def value(value)
-      when is_map(value) or is_tuple(value) or is_pid(value) or is_port(value) or
-             is_reference(value) or is_function(value) do
-    raise ArgumentError, "invalid InfluxQL value: #{inspect(value)}"
-  end
-
   def value(nil), do: "''"
   def value(value) when is_boolean(value), do: Kernel.to_string(value)
 
@@ -114,5 +115,6 @@ defmodule InfluxQL.Quote do
     do: "'#{value |> List.to_string() |> Sanitize.escape_value()}'"
 
   def value(value) when is_number(value), do: Kernel.to_string(value)
-  def value(value), do: value |> Kernel.to_string() |> Sanitize.escape_value()
+
+  def value(value), do: raise(ArgumentError, "invalid InfluxQL value: #{inspect(value)}")
 end
