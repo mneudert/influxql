@@ -7,6 +7,23 @@ defmodule InfluxQL.Sanitize do
   @re_pwd_set Regex.compile!(~s|(?i)password\s+for[^=]*=\s+(["']?[^\s"]+["']?)|)
 
   @doc """
+  Escapes value binaries to prevent InfluxQL injection.
+
+  ## Examples
+
+      iex> escape_value("already sane")
+      "already sane"
+
+      iex> escape_value("wasn't nice")
+      ~S(wasn\\'t nice)
+
+      iex> escape_value("'; SELECT * FROM malicious_query WHERE 'a'='a")
+      ~S(\\'; SELECT * FROM malicious_query WHERE \\'a\\'=\\'a)
+  """
+  @spec escape_value(String.t()) :: String.t()
+  def escape_value(value) when is_binary(value), do: String.replace(value, "'", "\\'")
+
+  @doc """
   Removes passwords from raw queries.
 
   ## Examples
@@ -44,83 +61,4 @@ defmodule InfluxQL.Sanitize do
         query
     end
   end
-
-  @doc """
-  Prevents InfluxQL-injection in a parameter
-
-  ## Examples
-
-      iex> escape_parameter(100)
-      100
-
-      iex> escape_parameter(:some_atom)
-      "'some_atom'"
-
-      iex> escape_parameter(true)
-      true
-
-      iex> escape_parameter(nil)
-      "''"
-
-      iex> escape_parameter('a charlist')
-      "'a charlist'"
-
-      iex> escape_parameter("a string")
-      "'a string'"
-
-      iex> escape_parameter("I don't know")
-      ~S('I don\\'t know')
-
-      iex> escape_parameter("'; SELECT * FROM malicious_query WHERE 'a'='a")
-      ~S('\\'; SELECT * FROM malicious_query WHERE \\'a\\'=\\'a')
-
-      iex> escape_parameter({1, 2})
-      ** (RuntimeError) Invalid InfluxQL parameter: {1, 2}
-
-      iex> escape_parameter(%{key: :value})
-      ** (RuntimeError) Invalid InfluxQL parameter: %{key: :value}
-
-  """
-  @spec escape_parameter(term()) :: term()
-  def escape_parameter(nil) do
-    "''"
-  end
-
-  def escape_parameter(param) when is_number(param) do
-    param
-  end
-
-  def escape_parameter(param) when is_boolean(param) do
-    param
-  end
-
-  def escape_parameter(param) when is_atom(param) do
-    "'#{to_string(param)}'"
-  end
-
-  def escape_parameter(param)
-      when is_map(param) or is_tuple(param) or is_pid(param) or is_port(param) or
-             is_reference(param) or is_function(param) do
-    raise "Invalid InfluxQL parameter: #{inspect(param)}"
-  end
-
-  def escape_parameter(param) when is_binary(param) do
-    escaped =
-      param
-      |> to_charlist
-      |> Enum.map(&escape_character/1)
-      |> List.flatten()
-      |> to_string
-
-    "'#{escaped}'"
-  end
-
-  def escape_parameter(param) do
-    param
-    |> to_string
-    |> escape_parameter
-  end
-
-  defp escape_character(?'), do: [?\\, ?']
-  defp escape_character(other), do: other
 end

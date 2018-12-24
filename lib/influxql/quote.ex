@@ -3,6 +3,8 @@ defmodule InfluxQL.Quote do
   InfluxQL element quoting module.
   """
 
+  alias InfluxQL.Sanitize
+
   @doc """
   Quotes an identifier for use in a query.
 
@@ -87,6 +89,11 @@ defmodule InfluxQL.Quote do
 
       iex> value({:key, :value})
       ** (ArgumentError) invalid InfluxQL value: {:key, :value}
+
+  ## InfluxQL injection prevention
+
+      iex> value("wasn't nice")
+      "'wasn\\\\'t nice'"
   """
   @spec value(term) :: String.t()
   def value(value)
@@ -97,8 +104,15 @@ defmodule InfluxQL.Quote do
 
   def value(nil), do: "''"
   def value(value) when is_boolean(value), do: Kernel.to_string(value)
-  def value(value) when is_atom(value), do: "'#{Atom.to_string(value)}'"
-  def value(value) when is_binary(value), do: "'#{value}'"
-  def value(value) when is_list(value), do: "'#{List.to_string(value)}'"
-  def value(value), do: Kernel.to_string(value)
+
+  def value(value) when is_atom(value),
+    do: "'#{value |> Atom.to_string() |> Sanitize.escape_value()}'"
+
+  def value(value) when is_binary(value), do: "'#{Sanitize.escape_value(value)}'"
+
+  def value(value) when is_list(value),
+    do: "'#{value |> List.to_string() |> Sanitize.escape_value()}'"
+
+  def value(value) when is_number(value), do: Kernel.to_string(value)
+  def value(value), do: value |> Kernel.to_string() |> Sanitize.escape_value()
 end
