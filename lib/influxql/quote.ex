@@ -57,7 +57,7 @@ defmodule InfluxQL.Quote do
   def identifier(identifier) when is_binary(identifier) do
     case Regex.match?(~r/([^a-zA-Z0-9_])/, identifier) do
       false -> identifier
-      true -> "\"#{identifier}\""
+      true -> ~s("#{identifier}")
     end
   end
 
@@ -100,7 +100,7 @@ defmodule InfluxQL.Quote do
   ## InfluxQL injection prevention
 
       iex> value("wasn't nice")
-      "'wasn\\\\'t nice'"
+      ~S('wasn\\'t nice')
   """
   @spec value(term) :: String.t()
   def value(nil), do: "''"
