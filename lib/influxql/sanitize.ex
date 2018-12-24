@@ -21,7 +21,8 @@ defmodule InfluxQL.Sanitize do
       ~S(ignore\\" WHERE 1=1; SELECT * FROM malicious_query --)
   """
   @spec escape_identifier(String.t()) :: String.t()
-  def escape_identifier(identifier) when is_binary(identifier), do: String.replace(identifier, ~S("), ~S(\"))
+  def escape_identifier(identifier) when is_binary(identifier),
+    do: String.replace(identifier, ~S("), ~S(\"))
 
   @doc """
   Escapes value binaries to prevent InfluxQL injection.
