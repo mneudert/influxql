@@ -3,6 +3,7 @@
 ## v0.2.0-dev
 
 - Enhancements
+    - Most possibilities (as currently known) of InfluxQL injection via malicious identifier or value arguments should be prevented ([#1](https://github.com/mneudert/influxql/pull/1))
     - Trying to quote invalid identifier or value types (such as functions) now raises an `ArgumentError`
 
 - Bug fixes
