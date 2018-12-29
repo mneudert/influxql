@@ -7,41 +7,6 @@ defmodule InfluxQL.Sanitize do
   @re_pwd_set Regex.compile!(~s|(?i)password\s+for[^=]*=\s+(["']?[^\s"]+["']?)|)
 
   @doc """
-  Escapes identifier binaries to prevent InfluxQL injection.
-
-  ## Examples
-
-      iex> escape_identifier("all_ok")
-      "all_ok"
-
-      iex> escape_identifier(~S(not"ok))
-      ~S(not\\"ok)
-
-      iex> escape_identifier(~S(ignore" WHERE 1=1; SELECT * FROM malicious_query --))
-      ~S(ignore\\" WHERE 1=1; SELECT * FROM malicious_query --)
-  """
-  @spec escape_identifier(String.t()) :: String.t()
-  def escape_identifier(identifier) when is_binary(identifier),
-    do: String.replace(identifier, ~S("), ~S(\"))
-
-  @doc """
-  Escapes value binaries to prevent InfluxQL injection.
-
-  ## Examples
-
-      iex> escape_value("already sane")
-      "already sane"
-
-      iex> escape_value("wasn't nice")
-      ~S(wasn\\'t nice)
-
-      iex> escape_value("'; SELECT * FROM malicious_query WHERE 'a'='a")
-      ~S(\\'; SELECT * FROM malicious_query WHERE \\'a\\'=\\'a)
-  """
-  @spec escape_value(String.t()) :: String.t()
-  def escape_value(value) when is_binary(value), do: String.replace(value, "'", "\\'")
-
-  @doc """
   Removes passwords from raw queries.
 
   ## Examples

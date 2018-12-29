@@ -3,7 +3,7 @@ defmodule InfluxQL.Quote do
   InfluxQL element quoting module.
   """
 
-  alias InfluxQL.Sanitize
+  alias InfluxQL.Escape
 
   @doc """
   Quotes an identifier for use in a query.
@@ -62,7 +62,7 @@ defmodule InfluxQL.Quote do
   def identifier(identifier) when is_binary(identifier) do
     case Regex.match?(~r/([^a-zA-Z0-9_])/, identifier) do
       false -> identifier
-      true -> ~s("#{Sanitize.escape_identifier(identifier)}")
+      true -> ~s("#{Escape.identifier(identifier)}")
     end
   end
 
@@ -112,12 +112,12 @@ defmodule InfluxQL.Quote do
   def value(value) when is_boolean(value), do: Kernel.to_string(value)
 
   def value(value) when is_atom(value),
-    do: "'#{value |> Atom.to_string() |> Sanitize.escape_value()}'"
+    do: "'#{value |> Atom.to_string() |> Escape.value()}'"
 
-  def value(value) when is_binary(value), do: "'#{Sanitize.escape_value(value)}'"
+  def value(value) when is_binary(value), do: "'#{Escape.value(value)}'"
 
   def value(value) when is_list(value),
-    do: "'#{value |> List.to_string() |> Sanitize.escape_value()}'"
+    do: "'#{value |> List.to_string() |> Escape.value()}'"
 
   def value(value) when is_number(value), do: Kernel.to_string(value)
 
