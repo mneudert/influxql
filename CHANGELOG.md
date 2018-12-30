@@ -1,6 +1,6 @@
 # Changelog
 
-## v0.2.0-dev
+## v0.2.0 (2018-12-30)
 
 - Enhancements
     - Most possibilities (as currently known) of InfluxQL injection via malicious identifier or value arguments should be prevented ([#1](https://github.com/mneudert/influxql/pull/1))
