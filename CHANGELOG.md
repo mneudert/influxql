@@ -1,6 +1,6 @@
 # Changelog
 
-## v0.2.1-dev
+## v0.2.1 (2019-05-25)
 
 - Bug fixes
     - Compilation for OTP-22.0 has been fixed ([#3](https://github.com/mneudert/influxql/pull/3))

@@ -7,7 +7,7 @@ defmodule InfluxQL.Mixfile do
     [
       app: :influxql,
       name: "InfluxQL",
-      version: "0.2.1-dev",
+      version: "0.2.1",
       elixir: "~> 1.3",
       deps: deps(),
       description: "InfluxQL utility/tooling package",
@@ -34,7 +34,7 @@ defmodule InfluxQL.Mixfile do
   defp docs do
     [
       main: "InfluxQL",
-      source_ref: "v0.2",
+      source_ref: "v0.2.1",
       source_url: @url_github
     ]
   end
