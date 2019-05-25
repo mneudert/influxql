@@ -31,6 +31,24 @@ defmodule InfluxQL.Quote do
       iex> identifier("dÃ¡shes-and.stÃ¼ff")
       "\\"dÃ¡shes-and.stÃ¼ff\\""
 
+      iex> identifier("a.b")
+      "\\"a.b\\""
+
+      iex> identifier(42)
+      "\\"42\\""
+
+      iex> identifier(5.7)
+      "\\"5.7\\""
+
+      iex> identifier('cl')
+      "cl"
+
+      iex> identifier([])
+      ""
+
+      iex> identifier([65])
+      "A"
+
    ## Invalid identifier types
 
       iex> identifier(%{key: :value})
@@ -48,13 +66,6 @@ defmodule InfluxQL.Quote do
       ~S("wasnot\\"nice")
   """
   @spec identifier(term) :: String.t()
-  def identifier(identifier)
-      when is_map(identifier) or is_tuple(identifier) or is_pid(identifier) or is_port(identifier) or
-             is_reference(identifier) or is_function(identifier) or
-             (is_bitstring(identifier) and not is_binary(identifier)) do
-    raise ArgumentError, "invalid InfluxQL identifier: #{inspect(identifier)}"
-  end
-
   for char <- ?0..?9 do
     def identifier(<<unquote(char), _::binary>> = identifier), do: "\"#{identifier}\""
   end
@@ -66,7 +77,13 @@ defmodule InfluxQL.Quote do
     end
   end
 
-  def identifier(identifier), do: identifier |> Kernel.to_string() |> identifier()
+  def identifier(identifier)
+      when is_atom(identifier) or is_number(identifier) or is_list(identifier) or
+             is_boolean(identifier),
+      do: identifier |> to_string() |> identifier()
+
+  def identifier(identifier),
+    do: raise(ArgumentError, "invalid InfluxQL identifier: #{inspect(identifier)}")
 
   @doc """
   Quotes a value for use in a query.
@@ -109,17 +126,12 @@ defmodule InfluxQL.Quote do
   """
   @spec value(term) :: String.t()
   def value(nil), do: "''"
-  def value(value) when is_boolean(value), do: Kernel.to_string(value)
 
-  def value(value) when is_atom(value),
-    do: "'#{value |> Atom.to_string() |> Escape.value()}'"
+  def value(value) when is_boolean(value) or is_number(value), do: to_string(value)
 
   def value(value) when is_binary(value), do: "'#{Escape.value(value)}'"
 
-  def value(value) when is_list(value),
-    do: "'#{value |> List.to_string() |> Escape.value()}'"
-
-  def value(value) when is_number(value), do: Kernel.to_string(value)
+  def value(value) when is_atom(value) or is_list(value), do: value |> to_string() |> value()
 
   def value(value), do: raise(ArgumentError, "invalid InfluxQL value: #{inspect(value)}")
 end

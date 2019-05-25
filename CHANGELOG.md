@@ -5,6 +5,11 @@
 - Backwards incompatible changes
     - Minimum required elixir version is now `~> 1.5`
 
+## v0.2.1 (2019-05-25)
+
+- Bug fixes
+    - Compilation for OTP-22.0 has been fixed ([#3](https://github.com/mneudert/influxql/pull/3))
+
 ## v0.2.0 (2018-12-30)
 
 - Enhancements
