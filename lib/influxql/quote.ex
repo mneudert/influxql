@@ -71,9 +71,10 @@ defmodule InfluxQL.Quote do
   end
 
   def identifier(identifier) when is_binary(identifier) do
-    case Regex.match?(~r/([^a-zA-Z0-9_])/, identifier) do
-      false -> identifier
-      true -> ~s("#{Escape.identifier(identifier)}")
+    if Regex.match?(~r/([^a-zA-Z0-9_])/, identifier) do
+      ~s("#{Escape.identifier(identifier)}")
+    else
+      identifier
     end
   end
 
