@@ -65,7 +65,7 @@ defmodule InfluxQL.Quote do
       iex> identifier(~S(wasnot"nice))
       ~S("wasnot\\"nice")
   """
-  @spec identifier(term) :: String.t()
+  @spec identifier(nil | atom | binary | list | number) :: binary
   for char <- ?0..?9 do
     def identifier(<<unquote(char), _::binary>> = identifier), do: "\"#{identifier}\""
   end
@@ -125,7 +125,7 @@ defmodule InfluxQL.Quote do
       iex> value("wasn't nice")
       ~S('wasn\\'t nice')
   """
-  @spec value(term) :: String.t()
+  @spec value(nil | atom | binary | list | number) :: binary
   def value(nil), do: "''"
 
   def value(value) when is_boolean(value) or is_number(value), do: to_string(value)
