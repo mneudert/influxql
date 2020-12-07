@@ -71,4 +71,4 @@ jobs:
 
     - name: dialyzer-run
       if: matrix.quality
-      run: mix dialyzer --no-check --halt-exit-status
+      run: mix dialyzer --no-check
