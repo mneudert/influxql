@@ -1,4 +1,4 @@
-name: Elixir CI
+name: Test
 
 on: [push, pull_request]
 
@@ -19,7 +19,6 @@ jobs:
             otp: 22.3
           - elixir: 1.11.2
             otp: 23.0
-            quality: true
 
     steps:
     - uses: actions/checkout@v2
@@ -46,29 +45,3 @@ jobs:
 
     - name: test
       run: mix coveralls
-
-    - name: format
-      if: matrix.quality
-      run: mix format --check-formatted
-
-    - name: credo
-      if: matrix.quality
-      run: mix credo --strict
-
-    - name: dialyzer-plt-cache
-      if: matrix.quality
-      uses: actions/cache@v1
-      id: plt-cache
-      with:
-        path: plts
-        key: ${{ runner.os }}-${{ matrix.otp }}-${{ matrix.elixir }}-plts-${{ hashFiles(format('{0}{1}', github.workspace, '/mix.lock')) }}
-
-    - name: dialyzer-plt-create
-      if: matrix.quality && steps.plt-cache.outputs.cache-hit != 'true'
-      run: |
-        mkdir -p plts
-        mix dialyzer --plt
-
-    - name: dialyzer-run
-      if: matrix.quality
-      run: mix dialyzer --no-check
