@@ -27,7 +27,7 @@ defmodule InfluxQL.Mixfile do
       {:credo, "~> 1.0", only: :dev, runtime: false},
       {:dialyxir, "~> 1.0", only: :dev, runtime: false},
       {:ex_doc, ">= 0.0.0", only: :dev, runtime: false},
-      {:excoveralls, "~> 0.13.0", only: :test, runtime: false}
+      {:excoveralls, "~> 0.14.0", only: :test, runtime: false}
     ]
   end
 
