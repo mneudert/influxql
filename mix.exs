@@ -47,6 +47,11 @@ defmodule InfluxQL.Mixfile do
   defp docs do
     [
       main: "InfluxQL",
+      extras: [
+        "CHANGELOG.md",
+        LICENSE: [title: "License"],
+        "README.md": [title: "Overview"]
+      ],
       source_ref: "master",
       source_url: @url_github
     ]
