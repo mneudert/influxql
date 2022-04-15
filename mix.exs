@@ -53,6 +53,7 @@ defmodule InfluxQL.Mixfile do
         LICENSE: [title: "License"],
         "README.md": [title: "Overview"]
       ],
+      formatters: ["html"],
       source_ref: "v#{@version}",
       source_url: @url_github
     ]
