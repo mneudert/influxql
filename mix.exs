@@ -1,6 +1,7 @@
 defmodule InfluxQL.Mixfile do
   use Mix.Project
 
+  @url_changelog "https://hexdocs.pm/influxql/changelog.html"
   @url_github "https://github.com/mneudert/influxql"
   @version "0.3.0-dev"
 
@@ -63,7 +64,10 @@ defmodule InfluxQL.Mixfile do
     %{
       files: ["CHANGELOG.md", "LICENSE", "mix.exs", "README.md", "lib"],
       licenses: ["Apache-2.0"],
-      links: %{"GitHub" => @url_github}
+      links: %{
+        "Changelog" => @url_changelog,
+        "GitHub" => @url_github
+      }
     }
   end
 end
