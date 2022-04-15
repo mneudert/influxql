@@ -2,12 +2,13 @@ defmodule InfluxQL.Mixfile do
   use Mix.Project
 
   @url_github "https://github.com/mneudert/influxql"
+  @version "0.3.0-dev"
 
   def project do
     [
       app: :influxql,
       name: "InfluxQL",
-      version: "0.3.0-dev",
+      version: @version,
       elixir: "~> 1.7",
       deps: deps(),
       description: "InfluxQL utility/tooling package",
@@ -52,7 +53,7 @@ defmodule InfluxQL.Mixfile do
         LICENSE: [title: "License"],
         "README.md": [title: "Overview"]
       ],
-      source_ref: "master",
+      source_ref: "v#{@version}",
       source_url: @url_github
     ]
   end
