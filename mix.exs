@@ -10,7 +10,7 @@ defmodule InfluxQL.Mixfile do
       app: :influxql,
       name: "InfluxQL",
       version: @version,
-      elixir: "~> 1.7",
+      elixir: "~> 1.9",
       deps: deps(),
       description: "InfluxQL utility/tooling package",
       dialyzer: dialyzer(),
