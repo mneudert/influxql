@@ -1,4 +1,4 @@
-defmodule InfluxQL.Mixfile do
+defmodule InfluxQL.MixProject do
   use Mix.Project
 
   @url_changelog "https://hexdocs.pm/influxql/changelog.html"
