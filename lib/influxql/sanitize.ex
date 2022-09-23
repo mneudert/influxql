@@ -11,19 +11,19 @@ defmodule InfluxQL.Sanitize do
 
   ## Examples
 
-      iex> redact_passwords(~s(create user "admin" with password 'admin'))
-      ~s(create user "admin" with password [REDACTED])
+      iex> redact_passwords(~S(create user "admin" with password 'admin'))
+      ~S(create user "admin" with password [REDACTED])
 
-      iex> redact_passwords(~s(set password for "admin" = 'admin'))
-      ~s(set password for "admin" = [REDACTED])
+      iex> redact_passwords(~S(set password for "admin" = 'admin'))
+      ~S(set password for "admin" = [REDACTED])
 
   Invalid statements should also have their passwords redacted.
 
-      iex> redact_passwords(~s(create user "admin" with password "admin"))
-      ~s(create user "admin" with password [REDACTED])
+      iex> redact_passwords(~S(create user "admin" with password "admin"))
+      ~S(create user "admin" with password [REDACTED])
 
-      iex> redact_passwords(~s(set password for "admin" = "admin"))
-      ~s(set password for "admin" = [REDACTED])
+      iex> redact_passwords(~S(set password for "admin" = "admin"))
+      ~S(set password for "admin" = [REDACTED])
   """
   @spec redact_passwords(String.t()) :: String.t()
   def redact_passwords(query) do
