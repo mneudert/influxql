@@ -40,7 +40,7 @@ defmodule InfluxQL.Quote do
       iex> identifier(5.7)
       "\\"5.7\\""
 
-      iex> identifier('cl')
+      iex> identifier(~C(cl))
       "cl"
 
       iex> identifier([])
@@ -106,7 +106,7 @@ defmodule InfluxQL.Quote do
       iex> value("stringy")
       "'stringy'"
 
-      iex> value('charlisty')
+      iex> value(~C(charlisty))
       "'charlisty'"
 
    ## Invalid value types
